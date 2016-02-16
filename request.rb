@@ -1,9 +1,8 @@
 class Request
   def initialize (string)
     @request_string = string
-    parse(@request_string)
   end
-  def self.parse_request (string)
-
+  def parse_request
+    request_items = @request_string.split
   end
 end

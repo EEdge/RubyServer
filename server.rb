@@ -1,4 +1,6 @@
 require 'socket'
+require './request.rb'
+require './response.rb'
 
 class Server
   attr_reader :options
@@ -14,8 +16,9 @@ class Server
       puts "Opening server socket to listen for connections"
       client = server.accept
       request_string = client.gets
-      client.puts(request_string)
-      # request = Request.new(request_string)
+      #client.puts(request_string)
+      request = Request.new(request_string)
+      client.puts(request.parse_request)
       # response = Response.new(request)
 
       client.close
