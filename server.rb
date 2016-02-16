@@ -1,6 +1,6 @@
 require 'socket'
 
-class Simple
+class Server
   attr_reader :options
 
   DEFAULT_PORT = 56789
@@ -13,13 +13,10 @@ class Simple
     loop do
       puts "Opening server socket to listen for connections"
       client = server.accept
-
-      # Just to make the responses a little different...
-      puts "Received connection, waiting for one second"
-      sleep(1)
-
-      puts "Writing message"
-      client.puts "The current time is #{Time.now}"
+      request_string = client.gets
+      client.puts(request_string)
+      # request = Request.new(request_string)
+      # response = Response.new(request)
 
       client.close
     end
