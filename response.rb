@@ -1,6 +1,13 @@
 class Response
-  def initialize (request)
-    #do stuff with request
+  attr_reader :resource
+  def initialize (resource)
+    @resource = resource
   end
-  #do more stuff
+  def respond
+    body = ""
+    @resource.each do |key,value|
+      body += "#{key}: #{value}\n"
+    end
+    body
+  end
 end

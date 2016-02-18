@@ -1,6 +1,7 @@
 require 'socket'
 require './request.rb'
 require './response.rb'
+require './resource.rb'
 
 class Server
   attr_reader :options
@@ -15,11 +16,11 @@ class Server
     loop do
       puts "Opening server socket to listen for connections"
       client = server.accept
-      request_string = client.gets
-      #client.puts(request_string)
-      request = Request.new(request_string)
-      client.puts(request.parse_request)
-      # response = Response.new(request)
+
+      request = Request.new(client).parse_request
+      resource = Resource.new(request).return_resource
+
+      client.puts Response.new(request).respond
 
       client.close
     end
