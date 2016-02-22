@@ -2,6 +2,8 @@ require 'socket'
 require './request.rb'
 require './response.rb'
 require './resource.rb'
+require 'erb'
+require 'uri'
 
 class Server
   attr_reader :options
@@ -20,7 +22,13 @@ class Server
       request = Request.new(client).parse_request
       resource = Resource.new(request).return_resource
 
-      client.puts Response.new(request).respond
+      path = './index.html'
+      if File.exist?(path) && !File.directory?(path)
+        File.open(path, 'rb') do |file|
+          IO.copy_stream(file, client)
+        end
+
+      end
 
       client.close
     end
