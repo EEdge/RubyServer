@@ -25,9 +25,16 @@ class Server
       path = './index.html'
       if File.exist?(path) && !File.directory?(path)
         File.open(path, 'rb') do |file|
+          client.print StatusCodeResponse.new(200, content_type(file), file.size).respond
+          client.print '\r\n'
           IO.copy_stream(file, client)
         end
-
+      else
+        File.open('./not_found_error.html', 'rb') do |file|
+          client.print StatusCodeResponse.new(404, 'text/html', file.size).respond
+          client.print '\r\n'
+          IO.copy_stream(file, client)
+        end
       end
 
       client.close
