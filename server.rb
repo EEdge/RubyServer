@@ -2,6 +2,7 @@ require 'socket'
 require './request.rb'
 require './response.rb'
 require './resource.rb'
+require './status_code_response.rb'
 require 'erb'
 require 'uri'
 
@@ -22,10 +23,10 @@ class Server
       request = Request.new(client).parse_request
       resource = Resource.new(request).return_resource
 
-      path = './index.html'
+      path = '/index.html'
       if File.exist?(path) && !File.directory?(path)
         File.open(path, 'rb') do |file|
-          client.print StatusCodeResponse.new(200, content_type(file), file.size).respond
+          client.print StatusCodeResponse(200, content_type(file), file.size)
           client.print '\r\n'
           IO.copy_stream(file, client)
         end
@@ -36,6 +37,8 @@ class Server
           IO.copy_stream(file, client)
         end
       end
+
+      #client.puts Response.new(request).respond
 
       client.close
     end
