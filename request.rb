@@ -8,6 +8,16 @@ class Request
 
     request_hash[:verb] = first_line[0]
     request_hash[:location] = first_line[1]
+    request_hash[:query_string] = request_hash[:location].split("?")
+    if request_hash[:query_string][1] then
+      request_hash[:location] = request_hash[:query_string][0]
+      temp_hash = Hash.new
+      request_hash[:query_string][1].split("&").each do |pair|
+        temp = pair.split("=")
+        temp_hash[temp[0].to_sym] = temp[1]
+      end
+      request_hash[:query_string] = temp_hash
+    end
     request_hash[:version] = first_line[2]
 
     request_hash[:headers] = Hash.new
@@ -18,7 +28,10 @@ class Request
     end
 
     if request_hash[:headers][:'Content-Length'] then
-      request_hash[:body] = @request_client.gets
+      request_hash[:body] = ""
+      0.upto(request_hash[:headers][:'Content-Length'].to_i - 1) do |index|
+         request_hash[:body] += @request_client.readchar
+       end
     end
     request_hash
   end
