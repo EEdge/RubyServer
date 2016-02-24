@@ -2,7 +2,9 @@ require 'erb'
 
 class StatusCodeResponse
 
-  def initialize (code, content, length)
+
+  def initialize (code, content, length, body)
+
     status_responses = Hash.new()
     status_responses['200'] = 'OK'
     status_responses['201'] = 'Created'
@@ -14,14 +16,18 @@ class StatusCodeResponse
     @status_string = status_responses["#{code}"]
     @content_type = content
     @content_length = length
+    @body = body
   end
 
   def respond
-    response_body = "HTTP/1.1 #{@status_code} #{@status_string}\r\n" +
-        "Content-Type: #{@content_type}\r\n" +
-        "Content-Length: #{@content_length}\r\n" +
-        "Connection: close\r\n"
-    response_body
+
+<<-RESULT
+HTTP/1.1 #{@status_code} #{@status_string}
+"Content-Type: #{@content_type} Content-Length: #{@content_length}
+
+#{@body}
+RESULT
   end
 
 end
+
