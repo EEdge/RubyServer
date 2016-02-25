@@ -4,10 +4,18 @@ class Request
   end
   def parse_request
     request_hash = Hash.new
-    first_line = @request_client.gets.split(" ")
+    puts "request: #{@request_client}"
+    first_line = @request_client.gets.split
+    puts first_line[0]
+    puts first_line[1]
+    puts first_line[2]
+    puts first_line[3]
 
     request_hash[:verb] = first_line[0]
+
     request_hash[:location] = first_line[1]
+
+    puts "location : #{request_hash[:location]}"
     request_hash[:query_string] = request_hash[:location].split("?")
     if request_hash[:query_string][1] then
       request_hash[:location] = request_hash[:query_string][0]
