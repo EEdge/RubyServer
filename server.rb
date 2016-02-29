@@ -1,6 +1,8 @@
 require 'socket'
 require './request.rb'
 require './resource.rb'
+require './http_configure.rb'
+require './file_reader.rb'
 require './response.rb'
 require 'erb'
 require 'uri'
@@ -15,6 +17,10 @@ class Server
   end
 
   def start
+    http_config_file = File.new("./httpd.conf")
+
+    http_config = HttpConfigure.new(http_config_file.to_s)
+
     loop do
       puts "Opening server socket to listen for connections"
       client = server.accept
