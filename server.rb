@@ -19,8 +19,6 @@ class Server
 
     http_config = HttpConfigure.new(http_config_file.to_s)
 
-    puts "#{http_config.server_root}, #{http_config.alias}"
-
     loop do
       puts "Opening server socket to listen for connections"
       client = server.accept
