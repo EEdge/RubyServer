@@ -1,9 +1,11 @@
 require 'socket'
 require './request.rb'
-require './response.rb'
 require './resource.rb'
 require './http_configure.rb'
 require './file_reader.rb'
+require './response.rb'
+require 'erb'
+require 'uri'
 
 class Server
   attr_reader :options
@@ -24,9 +26,21 @@ class Server
       client = server.accept
 
       request = Request.new(client).parse_request
-      resource = Resource.new(request).return_resource
+      #resource = Resource.new(request).return_resource
 
-      client.puts Response.new(request).respond
+      path = ".#{request[:location]}" #TODO: get requested path from request class
+      if (path == "." || path == "./")
+          path = "./index.html"
+      end
+      if File.exist?(path) && !File.directory?(path)
+        File.open(path, 'rb') do |file|
+          client.print Response.new(200, 'text/html', file.size, File.read(file)).respond #TODO: assign content-type based on file extension
+        end
+      else
+        File.open('./not_found_error.html', 'rb') do |file|
+          client.print Response.new(404, 'text/html', file.size, File.read(file)).respond
+        end
+      end
 
       client.close
     end
