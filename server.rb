@@ -2,6 +2,7 @@ require 'socket'
 require './request.rb'
 require './resource.rb'
 require './http_configure.rb'
+require './mime_types.rb'
 require './file_reader.rb'
 require './response.rb'
 require 'erb'
@@ -17,9 +18,12 @@ class Server
   end
 
   def start
-    http_config_file = File.new("./httpd.conf")
-
+    http_config_file = File.new("./config/httpd.conf")
     http_config = HttpConfigure.new(http_config_file.to_s)
+
+    mime_types_file = File.new("./config/mime.types")
+    mime_types = MimeTypes.new(mime_types_file.to_s).load
+
 
     loop do
       puts "Opening server socket to listen for connections"
