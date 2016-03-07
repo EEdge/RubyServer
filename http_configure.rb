@@ -7,10 +7,20 @@ class HttpConfigure
 
     @server_root = configure[:ServerRoot][0] #only one server root
     @listen_port = configure[:Listen][0] #can only listen on one port
-    @document_root = configure[:DocumentRoot] #only one document root
+    @document_root = configure[:DocumentRoot][0] #only one document root
     @log_file = configure[:LogFile][0] #only one log file
-    @alias = configure[:Alias] #multiple aliases
-    @script_alias = configure[:ScriptAlias] #multiple script aliases
+    @alias = Hash.new
+    configure[:Alias].each_index do |i| 
+      if i % 2 == 0 then 
+        @alias[configure[:Alias][i].gsub("/",'').to_sym] = configure[:Alias][i+1]
+      end
+    end
+    @script_alias = Hash.new
+    configure[:ScriptAlias].each_index do |i| 
+      if i % 2 == 0 then 
+        @script_alias[configure[:ScriptAlias][i].gsub("/",'').to_sym] = configure[:ScriptAlias][i+1]
+      end
+    end 
     @access_file_name = configure[:AccessFileName] 
     @directory_index = configure[:DirectoryIndex]
   end

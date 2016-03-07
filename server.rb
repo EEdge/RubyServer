@@ -24,6 +24,7 @@ class Server
     mime_types_file = File.new("./config/mime.types")
     mime_types = MimeTypes.new(mime_types_file.to_s).load
 
+    
 
     loop do
       puts "Opening server socket to listen for connections"
@@ -31,6 +32,8 @@ class Server
 
       request = Request.new(client).parse_request
       #resource = Resource.new(request).return_resource
+
+      puts Resource.new(request,http_config,mime_types).return_absolute_path
 
       path = ".#{request[:location]}" #TODO: get requested path from request class
       if (path == "." || path == "./")
