@@ -5,6 +5,7 @@ require './http_configure.rb'
 require './mime_types.rb'
 require './file_reader.rb'
 require './response.rb'
+require './access_check.rb'
 require 'erb'
 require 'uri'
 
@@ -33,12 +34,14 @@ class Server
       request = Request.new(client).parse_request
 
 
-      resource = Resource.new(request,http_config,mime_types)
+      resource = Resource.new(request[:location],http_config)
       resource.generate_absolute_path
 
       puts resource.absolute_path
 
       path = resource.absolute_path #TODO: get requested path from request class
+
+      path = AccessCheck.new(path, http_config).check
       
 
       if File.exist?(path) && !File.directory?(path)

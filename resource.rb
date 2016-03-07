@@ -1,17 +1,16 @@
 class Resource
   attr_reader :absolute_path
 
-  def initialize(headers_hash, http_configure, mime_types)
-    @headers_hash = headers_hash
+  def initialize(location, http_configure)
+    @location = location
     @http_configure = http_configure
-    @mime_types = mime_types
     @absolute_path = ""
   end
   def generate_absolute_path
 
   	if self.script_aliased? then 
   		
-  		location = @headers_hash[:location].split("/")
+  		location = @location.split("/")
   		index_of_script_alias = location.rindex do |dir| 
   			@http_configure.script_alias.has_key?(dir.to_sym)
   		end
@@ -24,7 +23,7 @@ class Resource
   	
   	elsif self.uri_aliased? then
 
-  		location = @headers_hash[:location].split("/")
+  		location = @location.split("/")
 
   		index_of_alias = location.rindex do |dir|
   			@http_configure.alias.has_key?(dir.to_sym)
@@ -37,7 +36,7 @@ class Resource
 
   	else
 
-  		location = @headers_hash[:location]
+  		location = @location
 
   		puts location
 
@@ -52,21 +51,21 @@ class Resource
   end
 
   def uri_aliased?
-  	@headers_hash[:location].split("/")
+  	@location.split("/")
   	.any? do |directory| 
   		@http_configure.alias.has_key?(directory.to_sym)
   	end
   end
 
   def script_aliased?
-  	@headers_hash[:location].split("/")
+  	@location.split("/")
   	.any? do |directory| 
   		@http_configure.script_alias.has_key?(directory.to_sym)
   	end
   end
 
   def is_file?
-  	last = @headers_hash[:location].split("/").last
+  	last = @location.split("/").last
   	if last then 
   		last.include? "." 
   	else
@@ -74,5 +73,5 @@ class Resource
   	end
   end
 
-  protected :uri_aliased?, :script_aliased?, :is_file?
+  protected :uri_aliased?, :is_file?
 end
