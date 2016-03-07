@@ -6,6 +6,8 @@ require './mime_types.rb'
 require './file_reader.rb'
 require './response.rb'
 require './access_check.rb'
+require './responses/*'
+
 require 'erb'
 require 'uri'
 
