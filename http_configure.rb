@@ -22,7 +22,7 @@ class HttpConfigure
       end
     end 
     @access_file_name = configure[:AccessFileName] 
-    @directory_index = configure[:DirectoryIndex]
+    @directory_index = configure[:DirectoryIndex][0]
   end
 
 end

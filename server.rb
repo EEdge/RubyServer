@@ -31,14 +31,16 @@ class Server
       client = server.accept
 
       request = Request.new(client).parse_request
-      #resource = Resource.new(request).return_resource
 
-      puts Resource.new(request,http_config,mime_types).return_absolute_path
 
-      path = ".#{request[:location]}" #TODO: get requested path from request class
-      if (path == "." || path == "./")
-          path = "./index.html"
-      end
+      resource = Resource.new(request,http_config,mime_types)
+      resource.generate_absolute_path
+
+      puts resource.absolute_path
+
+      path = resource.absolute_path #TODO: get requested path from request class
+      
+
       if File.exist?(path) && !File.directory?(path)
         File.open(path, 'rb') do |file|
           client.print Response.new(200, 'text/html', file.size, File.read(file)).respond #TODO: assign content-type based on file extension
