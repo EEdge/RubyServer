@@ -5,6 +5,7 @@ require './http_configure.rb'
 require './mime_types.rb'
 require './file_reader.rb'
 require './response.rb'
+require './access_check.rb'
 require 'erb'
 require 'uri'
 
@@ -24,18 +25,25 @@ class Server
     mime_types_file = File.new("./config/mime.types")
     mime_types = MimeTypes.new(mime_types_file.to_s).load
 
+    
 
     loop do
       puts "Opening server socket to listen for connections"
       client = server.accept
 
       request = Request.new(client).parse_request
-      #resource = Resource.new(request).return_resource
 
-      path = ".#{request[:location]}" #TODO: get requested path from request class
-      if (path == "." || path == "./")
-          path = "./index.html"
-      end
+
+      resource = Resource.new(request[:location],http_config)
+      resource.generate_absolute_path
+
+      puts resource.absolute_path
+
+      path = resource.absolute_path #TODO: get requested path from request class
+
+      path = AccessCheck.new(path, http_config).check
+      
+
       if File.exist?(path) && !File.directory?(path)
         File.open(path, 'rb') do |file|
           client.print Response.new(200, 'text/html', file.size, File.read(file)).respond #TODO: assign content-type based on file extension
