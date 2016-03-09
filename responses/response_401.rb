@@ -1,11 +1,17 @@
-class Response401 < Response 
+class Response401 < Response
 
-	def initialize(client)
+  def initialize()
+    path = require('./public_html/401.html')
+    @body = File.open(path, 'r')
+  end
 
-	end
+  def respond
+    <<-RESULT
+HTTP/1.1 401 Unauthorized
+Content-Type: Text/HTML Content-Length: #{@body.size}
 
-	def respond
-
-	end
+#{@body.read}
+    RESULT
+  end
 
 end

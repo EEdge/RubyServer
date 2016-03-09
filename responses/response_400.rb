@@ -1,11 +1,17 @@
-class Response400 < Response 
+class Response400 < Response
 
-	def initialize(client)
+  def initialize()
+    path = require('./public_html/400.html')
+    @body = File.open(path, 'r')
+  end
 
-	end
+  def respond
+    <<-RESULT
+HTTP/1.1 400 Bad Request
+Content-Type: Text/HTML Content-Length: #{@body.size}
 
-	def respond
-
-	end
+#{@body.read}
+    RESULT
+  end
 
 end

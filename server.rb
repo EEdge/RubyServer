@@ -51,7 +51,7 @@ class Server
           client.print Response.new(200, 'text/html', file.size, File.read(file)).respond #TODO: assign content-type based on file extension
         end
       else
-        File.open('./not_found_error.html', 'rb') do |file|
+        File.open('./404.html', 'rb') do |file|
           client.print Response.new(404, 'text/html', file.size, File.read(file)).respond
         end
       end
