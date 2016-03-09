@@ -9,7 +9,7 @@ class Response200 < Response
 
 		<<-RESULT
 HTTP/1.1 200 OK
-Content-Type: #{@mime_type} Content-Length: #{@body.bytesize}
+Content-Type: #{@mime_type} Content-Length: #{@body.size}
 
 #{@body}
 		RESULT
