@@ -33,6 +33,9 @@ class Worker
     else
       @client.print ResponseFactory.new.get_response(404)
     end
+
+    @client.close
+
   end
 
   def get_content_type(path)
