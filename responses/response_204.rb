@@ -9,7 +9,7 @@ class Response204 < Response
 HTTP/1.1 204 Created
 Content-Type: Text/HTML Content-Length: #{@body.size}
 
-#{@body.read}
+#{@body}
 		RESULT
 	end
 

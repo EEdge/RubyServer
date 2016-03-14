@@ -19,4 +19,9 @@ class MimeTypes
 		@mimetype_extensions
 	end
 
+	def get_mime_type(path)
+		extension = path.split('.')[-1]
+    	@mimetype_extensions[extension]
+	end
+
 end

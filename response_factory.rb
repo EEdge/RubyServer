@@ -28,4 +28,10 @@ class ResponseFactory
     Response200.new(body, mime_type).respond
 
   end
+
+  def get_CGI_response(cgi_appendage)
+
+    ResponseCGI.new(cgi_appendage).respond
+
+  end
 end
