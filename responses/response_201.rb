@@ -1,8 +1,7 @@
 class Response201 < Response
 
 	def initialize()
-		path = require('./public_html/201.html')
-		@body = File.open(path, 'r')
+		@body = File.new('./public_html/201.html').to_s
 	end
 
 	def respond
@@ -10,7 +9,7 @@ class Response201 < Response
 HTTP/1.1 201 No Content
 Content-Type: Text/HTML Content-Length: #{@body.size}
 
-#{@body.read}
+#{@body}
 		RESULT
 	end
 

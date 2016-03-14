@@ -23,6 +23,7 @@ class Resource
   	
   	elsif self.uri_aliased? then
 
+
   		location = @location.split("/")
 
   		index_of_alias = location.rindex do |dir|
@@ -30,7 +31,9 @@ class Resource
   		end
 
   		location[index_of_alias] = 
-  			@http_configure.script_alias[location[index_of_alias].to_sym]
+  			@http_configure.alias[location[index_of_alias].to_sym]
+
+      puts location[index_of_alias]
 
   		@absolute_path = location.join
 
