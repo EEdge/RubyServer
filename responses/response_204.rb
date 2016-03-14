@@ -1,8 +1,7 @@
 class Response204 < Response
 
 	def initialize()
-		path = require('./public_html/204.html')
-		@body = File.open(path, 'r')
+		@body = File.new('./public_html/204.html').to_s
 	end
 
 	def respond
