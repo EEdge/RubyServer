@@ -38,7 +38,10 @@ class Server
 
       client = server.accept
 
-      Worker.new(http_config, mime_types).listen(client)
+      Thread.new do 
+        Worker.new(http_config, mime_types).listen(client)
+        Thread.exit
+      end
 
     end
   end
