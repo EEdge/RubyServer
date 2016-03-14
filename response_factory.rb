@@ -10,6 +10,8 @@ class ResponseFactory
         Response201.new().respond
       when 204
         Response204.new().respond
+      when 304
+        Response304.new().repsond
       when 400
         Response400.new().respond
       when 401

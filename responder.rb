@@ -1,11 +1,12 @@
 class Responder 
 
-	def initialize(path, content_type, verb, resource)
+	def initialize(path, content_type, verb, resource, max_age)
 
 		@path = path
 		@content_type = content_type
 		@verb = verb
 	 	@resource = resource
+	 	@max_age = max_age
 
 	end
 
@@ -32,9 +33,16 @@ class Responder
 	              return ResponseFactory.new.get_200_response("", @content_type)
 
 	            when "GET"
-	              File.open(@path, 'rb') do |file|
-	                return ResponseFactory.new.get_200_response(file, @content_type)
+
+	              if not_updated? then
+	              	return ResponseFactory.new.get_response(304)
+	              else
+	              	File.open(@path, 'rb') do |file|
+	                	return ResponseFactory.new.get_200_response(file, @content_type)
+	              	end
 	              end
+
+	              
 	          end
 
 	        end
@@ -50,6 +58,11 @@ class Responder
 
 	    end
 
+	end
+
+	def not_updated? 
+		@max_age == (Time.now  - File.new(@path).mtime).to_i
+		
 	end
 
 end

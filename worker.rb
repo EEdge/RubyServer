@@ -18,8 +18,6 @@ class Worker
 
       resource.generate_absolute_path
 
-      puts resource.absolute_path
-
       path = resource.absolute_path
 
 
@@ -29,7 +27,10 @@ class Worker
 
       verb = request[:verb]
 
-      @client.print Responder.new(path, content_type, verb, resource).send
+      max_age = request[:"Cache-Control"].split("=")[1].chomp if request[:"Cache-Control"]
+      puts max_age
+
+      @client.print Responder.new(path, content_type, verb, resource, max_age).send
       
     rescue Exception400
       @client.print ResponseFactory.new.get_response(400)
