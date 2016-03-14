@@ -1,11 +1,16 @@
-class Response401 < Response 
+class Response401 < Response
 
-	def initialize(client)
+  def initialize()
+    @body = File.new('./public_html/401.html').to_s
+  end
 
-	end
+  def respond
+    <<-RESULT
+HTTP/1.1 401 Unauthorized
+Content-Type: Text/HTML Content-Length: #{@body.size}
 
-	def respond
-
-	end
+#{@body}
+    RESULT
+  end
 
 end

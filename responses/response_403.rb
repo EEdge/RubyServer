@@ -1,11 +1,16 @@
-class Response403 < Response 
+class Response403 < Response
 
-	def initialize(client)
+  def initialize()
+    @body = File.new('./public_html/403.html').to_s
+  end
 
-	end
+  def respond
+    <<-RESULT
+HTTP/1.1 403 Forbidden
+Content-Type: Text/HTML Content-Length: #{@body.size}
 
-	def respond
-
-	end
+#{@body}
+    RESULT
+  end
 
 end

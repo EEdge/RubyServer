@@ -1,11 +1,16 @@
-class Response400 < Response 
+class Response400 < Response
 
-	def initialize(client)
+  def initialize()
+    @body = File.new('./public_html/400.html').to_s
+  end
 
-	end
+  def respond
+    <<-RESULT
+HTTP/1.1 400 Bad Request
+Content-Type: Text/HTML Content-Length: #{@body.size}
 
-	def respond
-
-	end
+#{@body}
+    RESULT
+  end
 
 end

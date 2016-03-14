@@ -18,4 +18,5 @@ class MimeTypes
 		end
 		@mimetype_extensions
 	end
+
 end
