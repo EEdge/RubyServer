@@ -1,8 +1,14 @@
 class Response200 < Response 
 
-	def initialize(body, mime_type)
+	def initialize(body, mime_type, client, request)
     @mime_type = mime_type
     @body = body
+		@status = 200
+    @client = client
+    @request = request
+
+    logger = Logger.new(@client)
+    logger.write(@request, @status, @body.size)
 	end
 
 	def respond

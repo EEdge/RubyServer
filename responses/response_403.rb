@@ -1,7 +1,11 @@
 class Response403 < Response
 
-  def initialize()
+  def initialize(client, request)
     @body = File.new('./public_html/403.html').to_s
+    status = 403
+
+    logger = Logger.new(client)
+    logger.write(request, status, 0)
   end
 
   def respond

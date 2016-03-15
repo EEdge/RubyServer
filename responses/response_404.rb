@@ -2,8 +2,12 @@
 
 class Response404 < Response
 
-	def initialize()
+	def initialize(client, request)
     @body = File.new('./public_html/404.html').to_s
+		status = 404
+
+		logger = Logger.new(client)
+		logger.write(request, status, 0)
 	end
 
 	def respond

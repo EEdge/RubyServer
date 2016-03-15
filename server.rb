@@ -9,6 +9,7 @@ require './access_check.rb'
 require './worker.rb'
 require './response_factory.rb'
 require './responder.rb'
+require './logger.rb'
 Dir['./responses/*.rb'].each {|file| require file}
 Dir['./exceptions/*.rb'].each {|file| require file}
 
