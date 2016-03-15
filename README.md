@@ -15,3 +15,11 @@ To run server.rb from command line:
   ```
 
 Then go to Localhost:56789 in your browser to see results.
+
+Going to 
+
+```
+localhost:PORT/protected/
+```
+
+The username is ```iain``` and the password is ```password```
