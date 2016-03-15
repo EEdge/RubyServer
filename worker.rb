@@ -18,8 +18,6 @@ class Worker
 
       resource.generate_absolute_path
 
-      puts resource.absolute_path
-
       path = resource.absolute_path
 
       #puts request
@@ -28,14 +26,13 @@ class Worker
 
       content_type = get_content_type(path)
 
+      verb = request[:verb]
 
-      if File.exist?(path) && !File.directory?(path)
-        File.open(path, 'rb') do |file|
-          @client.print ResponseFactory.new.get_200_response(file, content_type)
-        end
-      else
-        @client.print ResponseFactory.new.get_response(404)
-      end
+      max_age = request[:"Cache-Control"].split("=")[1].chomp if request[:"Cache-Control"]
+      puts max_age
+
+      @client.print Responder.new(path, content_type, verb, resource, max_age).send
+      
     rescue Exception400
       @client.print ResponseFactory.new.get_response(400)
     rescue Exception401

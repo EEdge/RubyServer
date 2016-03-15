@@ -37,6 +37,10 @@ class Resource
 
   		@absolute_path = location.join
 
+      if !self.is_file? && @http_configure.directory_index then
+        @absolute_path += @http_configure.directory_index 
+      end
+
   	else
 
   		location = @location
@@ -44,13 +48,12 @@ class Resource
   		puts location
 
   		@absolute_path = @http_configure.document_root + location[1, location.length - 1]
+
+      if !self.is_file? && @http_configure.directory_index then
+        @absolute_path += @http_configure.directory_index 
+      end
   	end
 
-  	puts self.is_file?
-
-  	if !self.is_file? && @http_configure.directory_index then
-  		@absolute_path += @http_configure.directory_index 
-  	end
   end
 
   def uri_aliased?

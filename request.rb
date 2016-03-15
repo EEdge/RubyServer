@@ -18,6 +18,7 @@ class Request
 
       puts "location : #{request_hash[:location]}"
       request_hash[:query_string] = request_hash[:location].split("?")
+
       if request_hash[:query_string][1] then
         request_hash[:location] = request_hash[:query_string][0]
         temp_hash = Hash.new
@@ -27,6 +28,7 @@ class Request
         end
         request_hash[:query_string] = temp_hash
       end
+      
       request_hash[:version] = first_line[2]
 
       request_hash[:headers] = Hash.new

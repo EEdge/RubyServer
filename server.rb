@@ -8,6 +8,7 @@ require './response.rb'
 require './access_check.rb'
 require './worker.rb'
 require './response_factory.rb'
+require './responder.rb'
 Dir['./responses/*.rb'].each {|file| require file}
 Dir['./exceptions/*.rb'].each {|file| require file}
 
@@ -37,7 +38,10 @@ class Server
 
       client = server.accept
 
-      Worker.new(http_config, mime_types).listen(client)
+      Thread.new do 
+        Worker.new(http_config, mime_types).listen(client)
+        Thread.exit
+      end
 
     end
   end
