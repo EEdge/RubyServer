@@ -22,8 +22,9 @@ class Worker
 
       path = resource.absolute_path
 
+      #puts request
 
-      path = AccessCheck.new(path, @http_config).check
+      path = AccessCheck.new(request, path, @http_config).check
 
       content_type = get_content_type(path)
 

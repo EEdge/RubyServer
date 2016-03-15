@@ -7,7 +7,9 @@ class Response401 < Response
   def respond
     <<-RESULT
 HTTP/1.1 401 Unauthorized
-Content-Type: Text/HTML Content-Length: #{@body.size}
+Content-Type: Text/HTML 
+WWW-Authenticate: Basic
+Content-Length: #{@body.size}
 
 #{@body}
     RESULT

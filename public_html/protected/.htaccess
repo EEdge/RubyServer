@@ -1,0 +1,4 @@
+AuthUserFile ./config/.htpasswd
+AuthType Basic
+AuthName jrob
+Require valid-user
