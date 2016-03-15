@@ -31,14 +31,14 @@ class Worker
       max_age = request[:"Cache-Control"].split("=")[1].chomp if request[:"Cache-Control"]
       puts max_age
 
-      @client.print Responder.new(path, content_type, verb, resource, max_age).send
+      @client.print Responder.new(path, content_type, verb, resource, max_age, @client, request).send
       
     rescue Exception400
-      @client.print ResponseFactory.new.get_response(400)
+      @client.print ResponseFactory.new.get_response(400, @client, request)
     rescue Exception401
-      @client.print ResponseFactory.new.get_response(401)
+      @client.print ResponseFactory.new.get_response(401, @client, request)
     rescue Exception403
-      @client.print ResponseFactory.new.get_response(403)
+      @client.print ResponseFactory.new.get_response(403, @client, request)
     end
     @client.close
 
