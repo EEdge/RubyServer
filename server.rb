@@ -18,7 +18,7 @@ require 'uri'
 class Server
   attr_reader :options
 
-  DEFAULT_PORT = 56789
+  @default_port = 56789
 
   def initialize(options={})
     @options = options
@@ -28,6 +28,8 @@ class Server
 
     http_config_file = File.new("./config/httpd.conf")
     http_config = HttpConfigure.new(http_config_file.to_s)
+
+    @default_port = http_config.listen_port
 
     mime_types_file = File.new("./config/mime.types")
     mime_types = MimeTypes.new(mime_types_file.to_s).load
@@ -47,6 +49,6 @@ class Server
   end
 
   def server
-    @server ||= TCPServer.open(options.fetch(:port, DEFAULT_PORT))
+    @server ||= TCPServer.open(options.fetch(:port, @default_port))
   end
 end
